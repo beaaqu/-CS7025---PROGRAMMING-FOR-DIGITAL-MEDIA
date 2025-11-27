@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Button Click Counter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #count {
+      font-weight: bold;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Button Click Tracker</h1>
+  <button id="clickBtn">Click Me!</button>
+  <p>Button clicked: <span id="count">0</span> times</p>
+
+  <script>
+    // --- Cookie code: set cookie for 1 day ---
+    function setCookie(name, value, days) {
+      const d = new Date();
+      d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+      const expires = "expires=" + d.toUTCString();
+      document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+
+    // Example: store a cookie for one day
+    setCookie("exampleCookie", "storedValue", 1);
+
+    // --- Local Storage click counter ---
+    const btn = document.getElementById("clickBtn");
+    const countDisplay = document.getElementById("count");
+
+    let count = Number(localStorage.getItem("clickCount")) || 0;
+    countDisplay.textContent = count;
+
+    btn.addEventListener("click", () => {
+      count++;
+      localStorage.setItem("clickCount", count);
+      countDisplay.textContent = count;
+    });
+  </script>
+</body>
+</html>

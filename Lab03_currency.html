@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Currency Converter</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 30px; }
+    select, input { padding: 8px; margin: 5px; }
+    button { padding: 10px 15px; cursor: pointer; }
+    #result { margin-top: 20px; font-size: 18px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Currency Converter</h1>
+
+  <label>Amount:</label>
+  <input type="number" id="amount" step="0.01" />
+
+  <label>From:</label>
+  <select id="from">
+    <option value="EUR">EUR</option>
+    <option value="USD">USD</option>
+  </select>
+
+  <label>To:</label>
+  <select id="to">
+    <option value="USD">USD</option>
+    <option value="EUR">EUR</option>
+  </select>
+
+  <br><br>
+  <button id="convertBtn">Convert</button>
+
+  <p id="result"></p>
+
+  <script>
+    // Fixed exchange rates
+    const exchange = {
+      EUR : { USD: 1.17 },
+      USD : { EUR: 0.85 }
+    };
+
+    function convert(amount, from, to) {
+      if (from === to) return amount;
+      const rate = exchange[from][to];
+      return (amount * rate).toFixed(2);
+    }
+
+    document.getElementById("convertBtn").addEventListener("click", () => {
+      const amount = parseFloat(document.getElementById("amount").value);
+      const from = document.getElementById("from").value;
+      const to = document.getElementById("to").value;
+      const resultBox = document.getElementById("result");
+
+      if (isNaN(amount) || amount <= 0) {
+        resultBox.textContent = "Invalid amount.";
+        return;
+      }
+
+      const result = convert(amount, from, to);
+      resultBox.textContent = `${amount} ${from} = ${result} ${to}`;
+    });
+  </script>
+</body>
+</html>

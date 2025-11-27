@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Playlist Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 30px; }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    .playlist { margin-top: 20px; padding: 10px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>Music Playlist Generator</h1>
+  <p>Click the button to generate a random playlist without duplicate songs.</p>
+  <button id="generateBtn">Generate Playlist</button>
+
+  <div class="playlist">
+    <h2>Generated Playlist:</h2>
+    <ul id="playlist"></ul>
+  </div>
+
+  <script>
+    // Full nested music library structure
+    const musicLibrary = {
+      "Rock/Indie": {
+        "Arctic Monkeys": ["Do I Wanna Know?", "505", "R U Mine?"],
+        "The Smiths": ["This Charming Man", "There Is a Light", "Heaven Knows"]
+      },
+      "Hip-Hop/Rap": {
+        "Travis Scott": ["SICKO MODE", "Goosebumps", "FE!N"],
+        "Kendrick Lamar": ["HUMBLE.", "Alright", "Swimming Pools"]
+      },
+      "Pop/Alternative": {
+        "Billie Eilish": ["Bad Guy", "Ocean Eyes", "Everything I Wanted"],
+        "Benson Boone": ["Beautiful Things", "Ghost Town", "In the Stars"]
+      }
+    };
+
+    const generateBtn = document.getElementById("generateBtn");
+    const playlistUI = document.getElementById("playlist");
+
+    function getRandomItem(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function generatePlaylist() {
+      playlistUI.innerHTML = "";
+
+      const usedSongs = new Set();
+      const playlist = [];
+
+      // Loop through genres
+      for (const genre in musicLibrary) {
+        const artists = musicLibrary[genre];
+        const artistNames = Object.keys(artists);
+
+        // Pick random artist per genre
+        const artist = getRandomItem(artistNames);
+        const songs = artists[artist];
+
+        // Pick random song without duplication
+        let song;
+        do {
+          song = getRandomItem(songs);
+        } while (usedSongs.has(song));
+
+        usedSongs.add(song);
+        playlist.push(`${genre} → ${artist} → ${song}`);
+      }
+
+      // Render playlist
+      playlist.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        playlistUI.appendChild(li);
+      });
+    }
+
+    generateBtn.addEventListener("click", generatePlaylist);
+  </script>
+</body>
+</html>
